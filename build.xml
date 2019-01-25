@@ -818,13 +818,19 @@
         <javac fork="true"
                debug="true" debuglevel="${debuglevel}" encoding="utf-8"
                destdir="${build.classes.main}" includeantruntime="false" source="8" target="8"
-               memorymaximumsize="512M">
+               memorymaximumsize="4G">
+	  <compilerarg value="-processor"/>
+	  <compilerarg value="com.amazon.checkerframework.compliance.kms.ComplianceChecker"/>
+	  <compilerarg value="-Astubs=/Users/kelloggm/Research/compliance-ws/aws-kms-compliance-checker/OtherJavaCrypto.astub:/Users/kelloggm/Research/compliance-ws/aws-kms-compliance-checker/GenerateDataKeyRequest.astub"/>
+	  <compilerarg value="-processorpath"/>
+	  <compilerarg value="/Users/kelloggm/Research/compliance-ws/aws-kms-compliance-checker/build/libs/aws-kms-compliance-checker.jar:/Users/kelloggm/jsr308/checker-framework/checker/dist/checker.jar:/Users/kelloggm/jsr308/checker-framework/checker/dist/checker-qual.jar"/>
             <src path="${build.src.java}"/>
             <src path="${build.src.java8}"/>
             <src path="${build.src.gen-java}"/>
             <compilerarg value="-XDignore.symbol.file"/>
             <classpath>
-                <path refid="cassandra.classpath"/>
+              <path refid="cassandra.classpath"/>
+	      <pathelement location="/Users/kelloggm/jsr308/checker-framework/checker/dist/checker-qual.jar"/>
             </classpath>
         </javac>
     </target>

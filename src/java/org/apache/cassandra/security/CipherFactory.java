@@ -94,6 +94,7 @@ public class CipherFactory
                        });
     }
 
+    @SuppressWarnings("compliance") // TRUE POSITIVE: ivLength is configurable, but defaults to 16 bytes
     public Cipher getEncryptor(String transformation, String keyAlias) throws IOException
     {
         byte[] iv = new byte[ivLength];

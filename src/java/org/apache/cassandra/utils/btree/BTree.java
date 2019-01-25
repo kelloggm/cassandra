@@ -36,6 +36,8 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.Comparator.naturalOrder;
 
+@SuppressWarnings("compliance") // FALSE POSITIVE: CF is overly strict wrt generics and issues errors. This class
+// is obviously unrelated to cryptography, by manual inspection.
 public class BTree
 {
     /**
