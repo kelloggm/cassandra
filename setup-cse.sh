@@ -13,6 +13,7 @@ if [ "x$CHECKERFRAMEWORK" == "x" ]; then
     CURDIR=`pwd`
     cd ~/
     git clone https://github.com/typetools/checker-framework
+    cd checker-framework
     gradle assemble
     export CHECKERFRAMEWORK=`pwd`
     cd $CURDIR
@@ -21,11 +22,24 @@ fi
 if [ "x$COMPLIANCECHECKER" == "x" ]; then
     CURDIR=`pwd`
     cd ~/
-    gitclone https://github.com/awslabs/aws-kms-compliance-checker
+    git clone https://github.com/awslabs/aws-kms-compliance-checker
+    cd aws-kms-compliance-checker
     gradle assemble
     export COMPLIANCECHECKER=`pwd`
     cd $CURDIR
 fi
+
+if [ "x$CRYPTOCHECKER" == "x" ]; then
+    CURDIR=`pwd`
+    cd ~/
+    git clone https://github.com/awslabs/aws-crypto-policy-compliance-checker
+    cd aws-crypto-policy-compliance-checker
+    gradle assemble
+    export CRYPTOCHECKER=`pwd`
+    echo "crypto checker is here: $CRYPTOCHECKER"
+    cd $CURDIR
+fi
+
 
 if [ $(basename $PWD) != 'cassandra' ]; then
     git clone https://github.com/kelloggm/cassandra.git

@@ -42,6 +42,9 @@ import org.slf4j.LoggerFactory;
 import io.netty.util.concurrent.FastThreadLocal;
 import org.apache.cassandra.config.TransparentDataEncryptionOptions;
 
+import com.amazon.checkerframework.cryptopolicy.qual.SuppressCryptoWarning;
+import com.amazon.checkerframework.cryptopolicy.qual.CryptoWhiteListed;
+
 /**
  * A factory for loading encryption keys from {@link KeyProvider} instances.
  * Maintains a cache of loaded keys to avoid invoking the key provider on every call.
@@ -62,6 +65,7 @@ public class CipherFactory
     private final int ivLength;
     private final KeyProvider keyProvider;
 
+    @SuppressCryptoWarning(issue = "https://www.google.com") // TRUE POSITIVE: SHA1PRNG is a weak algo
     public CipherFactory(TransparentDataEncryptionOptions options)
     {
         logger.info("initializing CipherFactory");
@@ -94,22 +98,25 @@ public class CipherFactory
                        });
     }
 
-    @SuppressWarnings("compliance") // TRUE POSITIVE: ivLength is configurable, but defaults to 16 bytes
-    public Cipher getEncryptor(String transformation, String keyAlias) throws IOException
+    @SuppressWarnings({"compliance", "value"}) // TRUE POSITIVE: ivLength is configurable, but defaults to 16 bytes
+    public Cipher getEncryptor(@CryptoWhiteListed({"aes/ctr/nopadding", "aes/gcm/nopadding", "aes/cbc/pkcs5padding", "aeswrap",
+                    "rsa/ecb/oaeppadding", "rsa/ecb/oaepwithsha.*"}) String transformation, String keyAlias) throws IOException
     {
         byte[] iv = new byte[ivLength];
         secureRandom.nextBytes(iv);
         return buildCipher(transformation, keyAlias, iv, Cipher.ENCRYPT_MODE);
     }
 
-    public Cipher getDecryptor(String transformation, String keyAlias, byte[] iv) throws IOException
+    public Cipher getDecryptor(@CryptoWhiteListed({"aes/ctr/nopadding", "aes/gcm/nopadding", "aes/cbc/pkcs5padding", "aeswrap",
+                    "rsa/ecb/oaeppadding", "rsa/ecb/oaepwithsha.*"}) String transformation, String keyAlias, byte[] iv) throws IOException
     {
         assert iv != null && iv.length > 0 : "trying to decrypt, but the initialization vector is empty";
         return buildCipher(transformation, keyAlias, iv, Cipher.DECRYPT_MODE);
     }
 
     @VisibleForTesting
-    Cipher buildCipher(String transformation, String keyAlias, byte[] iv, int cipherMode) throws IOException
+    Cipher buildCipher(@CryptoWhiteListed({"aes/ctr/nopadding", "aes/gcm/nopadding", "aes/cbc/pkcs5padding", "aeswrap",
+                    "rsa/ecb/oaeppadding", "rsa/ecb/oaepwithsha.*"}) String transformation, String keyAlias, byte[] iv, int cipherMode) throws IOException
     {
         try
         {

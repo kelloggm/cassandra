@@ -690,7 +690,7 @@
         <dependency groupId="net.openhft" artifactId="chronicle-threads" version="${chronicle-threads.version}"/>
         <dependency groupId="joda-time" artifactId="joda-time"/>
         <dependency groupId="org.fusesource" artifactId="sigar"/>
-        <dependency groupId="org.eclipse.jdt.core.comp${env.CHECKERFRAMEWORK}iler" artifactId="ecj"/>
+        <dependency groupId="org.eclipse.jdt.core.compiler" artifactId="ecj"/>
         <dependency groupId="org.caffinitas.ohc" artifactId="ohc-core"/>
         <dependency groupId="org.caffinitas.ohc" artifactId="ohc-core-j8"/>
         <dependency groupId="com.github.ben-manes.caffeine" artifactId="caffeine" />
@@ -820,18 +820,19 @@
                destdir="${build.classes.main}" includeantruntime="false" source="8" target="8"
                memorymaximumsize="4G">
 	  <compilerarg value="-processor"/>
-	  <compilerarg value="com.amazon.checkerframework.compliance.kms.ComplianceChecker"/>
-	  <compilerarg value="-Astubs=${env.COMPLIANCECHECKER}OtherJavaCrypto.astub:${env.COMPLIANCECHECKER}GenerateDataKeyRequest.astub"/>
+	  <compilerarg value="com.amazon.checkerframework.compliance.kms.ComplianceChecker,com.amazon.checkerframework.cryptopolicy.CryptoPolicyComplianceChecker"/>
+	  <compilerarg value="-Astubs=${env.COMPLIANCECHECKER}/OtherJavaCrypto.astub:${env.COMPLIANCECHECKER}/GenerateDataKeyRequest.astub:${env.CRYPTOCHECKER}/stubs:./String.astub"/>
           <compilerarg value="-J-Xmx8G" />
 	  <compilerarg value="-processorpath"/>
-	  <compilerarg value="${env.COMPLIANCECHECKER}build/libs/aws-kms-compliance-checker.jar:${env.CHECKERFRAMEWORK}checker/dist/checker.jar:${env.CHECKERFRAMEWORK}checker/dist/checker-qual.jar"/>
+	  <compilerarg value="${env.COMPLIANCECHECKER}/build/libs/aws-kms-compliance-checker.jar:${env.CHECKERFRAMEWORK}/checker/dist/checker.jar:${env.CHECKERFRAMEWORK}checker/dist/checker-qual.jar:${env.CRYPTOCHECKER}/build/libs/aws-crypto-policy-compliance-checker.jar"/>
             <src path="${build.src.java}"/>
             <src path="${build.src.java8}"/>
             <src path="${build.src.gen-java}"/>
             <compilerarg value="-XDignore.symbol.file"/>
             <classpath>
               <path refid="cassandra.classpath"/>
-	      <pathelement location="${env.CHECKERFRAMEWORK}checker/dist/checker-qual.jar"/>
+	      <pathelement location="${env.CHECKERFRAMEWORK}/checker/dist/checker-qual.jar"/>
+              <pathelement location="${env.CRYPTOCHECKER}/build/libs/aws-crypto-policy-compliance-checker.jar"/>
             </classpath>
         </javac>
     </target>
