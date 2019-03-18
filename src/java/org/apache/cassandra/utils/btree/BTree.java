@@ -36,8 +36,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.Comparator.naturalOrder;
 
-@SuppressWarnings({"compliance", "value"}) // FALSE POSITIVE: CF is overly strict wrt generics and issues errors. This class
-// is obviously unrelated to cryptography, by manual inspection.
 public class BTree
 {
     /**
@@ -126,7 +124,7 @@ public class BTree
 
     public static <C, K extends C, V extends C> Object[] build(Collection<K> source, UpdateFunction<K, V> updateF)
     {
-        return buildInternal(source, source.size(), updateF);
+        return BTree.<C, K, V>buildInternal(source, source.size(), updateF);
     }
 
     /**
@@ -140,7 +138,7 @@ public class BTree
     {
         if (size < 0)
             throw new IllegalArgumentException(Integer.toString(size));
-        return buildInternal(source, size, updateF);
+        return BTree.<C, K, V>buildInternal(source, size, updateF);
     }
 
     private static <C, K extends C, V extends C> Object[] buildLeaf(Iterator<K> it, int size, UpdateFunction<K, V> updateF)
@@ -162,7 +160,7 @@ public class BTree
         assert size > 0;
         assert level >= 0;
         if (level == 0)
-            return buildLeaf(it, size, updateF);
+            return BTree.<C, K, V>buildLeaf(it, size, updateF);
 
         // calcuate child num: (size - (childNum - 1)) / maxChildSize <= childNum
         int childNum = size / (TREE_SIZE[level - 1] + 1) + 1;
@@ -209,7 +207,7 @@ public class BTree
         while (size > TREE_SIZE[level])
             level++;
         Iterator<K> it = source.iterator();
-        return buildInternal(it, size, level, updateF);
+        return BTree.<C, K, V>buildInternal(it, size, level, updateF);
     }
 
     public static <C, K extends C, V extends C> Object[] update(Object[] btree,
@@ -238,7 +236,7 @@ public class BTree
                                                                 UpdateFunction<K, V> updateF)
     {
         if (isEmpty(btree))
-            return build(updateWith, updateWithLength, updateF);
+            return BTree.<C, K, V>build(updateWith, updateWithLength, updateF);
 
 
         TreeBuilder builder = TreeBuilder.newInstance();
