@@ -184,6 +184,7 @@ public abstract class AbstractBTreePartition implements Partition, Iterable<Row>
     {
         ClusteringBound start = slice.start() == ClusteringBound.BOTTOM ? null : slice.start();
         ClusteringBound end = slice.end() == ClusteringBound.TOP ? null : slice.end();
+        @SuppressWarnings({"compliance","crypto","value"}) // FALSE POSITIVE: CF issues asSuperVisitor error
         Iterator<Row> rowIter = BTree.slice(current.tree, metadata().comparator, start, true, end, true, desc(reversed));
         Iterator<RangeTombstone> deleteIter = current.deletionInfo.rangeIterator(slice, reversed);
         return merge(rowIter, deleteIter, selection, reversed, current, staticRow);
