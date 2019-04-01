@@ -252,6 +252,7 @@ public class Murmur3Partitioner implements IPartitioner
         return false;
     }
 
+    @SuppressWarnings({"compliance","value","crypto"}) // FALSE POSITIVE: new Float(1.0) throws a spurious error from the Value Checker
     public Map<Token, Float> describeOwnership(List<Token> sortedTokens)
     {
         Map<Token, Float> ownerships = new HashMap<Token, Float>();

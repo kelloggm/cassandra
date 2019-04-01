@@ -20,11 +20,13 @@ package org.apache.cassandra.config;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Objects;
 
+import org.checkerframework.common.value.qual.StringVal;
+
 public class TransparentDataEncryptionOptions
 {
     public boolean enabled = false;
     public int chunk_length_kb = 64;
-    public String cipher = "AES/CBC/PKCS5Padding";
+    public @StringVal("AES/CBC/PKCS5Padding") String cipher = "AES/CBC/PKCS5Padding";
     public String key_alias;
     public int iv_length = 16;
 
@@ -38,12 +40,12 @@ public class TransparentDataEncryptionOptions
         this.enabled = enabled;
     }
 
-    public TransparentDataEncryptionOptions(String cipher, String keyAlias, ParameterizedClass keyProvider)
+    public TransparentDataEncryptionOptions(@StringVal("AES/CBC/PKCS5Padding") String cipher, String keyAlias, ParameterizedClass keyProvider)
     {
         this(true, cipher, keyAlias, keyProvider);
     }
 
-    public TransparentDataEncryptionOptions(boolean enabled, String cipher, String keyAlias, ParameterizedClass keyProvider)
+    public TransparentDataEncryptionOptions(boolean enabled, @StringVal("AES/CBC/PKCS5Padding") String cipher, String keyAlias, ParameterizedClass keyProvider)
     {
         this.enabled = enabled;
         this.cipher = cipher;

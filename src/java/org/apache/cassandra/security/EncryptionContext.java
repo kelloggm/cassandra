@@ -154,6 +154,7 @@ public class EncryptionContext
      * If encryption headers are found in the {@code parameters},
      * those headers are merged with the application-wide {@code encryptionContext}.
      */
+    @SuppressWarnings({"compliance", "crypto", "value"}) // TRUE POSITIVE: this method can read the name of the cipher used from the parameters map, which is read from a file.
     public static EncryptionContext createFromMap(Map<?, ?> parameters, EncryptionContext encryptionContext)
     {
         if (parameters == null || parameters.isEmpty())
