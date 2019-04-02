@@ -822,6 +822,7 @@
 	  <compilerarg value="-processor"/>
 	  <compilerarg value="com.amazon.checkerframework.compliance.kms.ComplianceChecker,com.amazon.checkerframework.cryptopolicy.CryptoPolicyComplianceChecker"/>
 	  <compilerarg value="-Astubs=${env.COMPLIANCECHECKER}/OtherJavaCrypto.astub:${env.COMPLIANCECHECKER}/GenerateDataKeyRequest.astub:${env.CRYPTOCHECKER}/stubs:./String.astub"/>
+          <compilerarg value="-AskipDefs=AbstractBTreePartition"/>
           <compilerarg value="-J-Xmx8G" />
 	  <compilerarg value="-processorpath"/>
 	  <compilerarg value="${env.COMPLIANCECHECKER}/build/libs/aws-kms-compliance-checker.jar:${env.CHECKERFRAMEWORK}/checker/dist/checker.jar:${env.CHECKERFRAMEWORK}checker/dist/checker-qual.jar:${env.CRYPTOCHECKER}/build/libs/aws-crypto-policy-compliance-checker.jar"/>
