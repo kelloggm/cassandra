@@ -26,11 +26,13 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 
+import org.checkerframework.common.value.qual.StringVal;
+
 public class HashingUtils
 {
     public static final HashFunction CURRENT_HASH_FUNCTION = Hashing.md5();
 
-    public static MessageDigest newMessageDigest(String algorithm)
+    public static MessageDigest newMessageDigest(@StringVal("MD5") String algorithm)
     {
         try
         {
